@@ -41,7 +41,6 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
 
     const defaultModifiers = useMemo(
         () => [{ name: 'offset', options: { offset: finalConfig.offset } }],
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         Array.isArray(finalConfig.offset) ? finalConfig.offset : [],
     );
 
@@ -60,7 +59,10 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
     });
 
     const timer = useRef<number>(0);
-    useEffect(() => () => clearTimeout(timer.current), []);
+    useEffect(
+        () => () => clearTimeout(timer.current),
+        []
+    );
 
     const { styles, attributes, ...popperProps } = usePopper(
         finalConfig.followCursor ? virtualElement : triggerRef,
@@ -70,12 +72,7 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
 
     const update = popperProps.update;
 
-    const getLatest = useGetLatest({
-        visible,
-        triggerRef,
-        tooltipRef,
-        finalConfig,
-    });
+    const getLatest = useGetLatest({ visible, triggerRef, tooltipRef, finalConfig, });
 
     const isTriggeredBy = useCallback(
         (trigger: TriggerType) => {
@@ -83,10 +80,7 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
                 ? finalConfig.trigger.includes(trigger)
                 : finalConfig.trigger === trigger;
         },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        Array.isArray(finalConfig.trigger)
-            ? finalConfig.trigger
-            : [finalConfig.trigger],
+        Array.isArray(finalConfig.trigger) ? finalConfig.trigger : [finalConfig.trigger]
     );
 
     const hideTooltip = useCallback(
@@ -145,9 +139,12 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
                 return;
             }
 
-            triggerRef.addEventListener('click', toggleTooltip);
+            const controller = new AbortController();
+            triggerRef.addEventListener('click', toggleTooltip, { signal: controller.signal });
 
-            return () => triggerRef.removeEventListener('click', toggleTooltip);
+            return () => {
+                controller.abort();
+            };
         }, [triggerRef, isTriggeredBy, toggleTooltip]
     );
 
@@ -158,9 +155,12 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
                 return;
             }
 
-            triggerRef.addEventListener('dblclick', toggleTooltip);
+            const controller = new AbortController();
+            triggerRef.addEventListener('dblclick', toggleTooltip, { signal: controller.signal });
 
-            return () => triggerRef.removeEventListener('dblclick', toggleTooltip);
+            return () => {
+                controller.abort();
+            };
         }, [triggerRef, isTriggeredBy, toggleTooltip]
     );
 
@@ -177,9 +177,12 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
                 toggleTooltip();
             };
 
-            triggerRef.addEventListener('contextmenu', preventDefaultAndToggle);
-            return () =>
-                triggerRef.removeEventListener('contextmenu', preventDefaultAndToggle);
+            const controller = new AbortController();
+            triggerRef.addEventListener('contextmenu', preventDefaultAndToggle, { signal: controller.signal });
+
+            return () => {
+                controller.abort();
+            };
         }, [triggerRef, isTriggeredBy, toggleTooltip]
     );
 
@@ -190,11 +193,12 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
                 return;
             }
 
-            triggerRef.addEventListener('focus', showTooltip);
-            triggerRef.addEventListener('blur', hideTooltip);
+            const controller = new AbortController();
+            triggerRef.addEventListener('focus', showTooltip, { signal: controller.signal });
+            triggerRef.addEventListener('blur', hideTooltip, { signal: controller.signal });
+
             return () => {
-                triggerRef.removeEventListener('focus', showTooltip);
-                triggerRef.removeEventListener('blur', hideTooltip);
+                controller.abort();
             };
         }, [triggerRef, isTriggeredBy, showTooltip, hideTooltip]
     );
@@ -206,11 +210,12 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
                 return;
             }
 
-            triggerRef.addEventListener('mouseenter', showTooltip);
-            triggerRef.addEventListener('mouseleave', hideTooltip);
+            const controller = new AbortController();
+            triggerRef.addEventListener('mouseenter', showTooltip, { signal: controller.signal });
+            triggerRef.addEventListener('mouseleave', hideTooltip, { signal: controller.signal });
+
             return () => {
-                triggerRef.removeEventListener('mouseenter', showTooltip);
-                triggerRef.removeEventListener('mouseleave', hideTooltip);
+                controller.abort();
             };
         }, [triggerRef, isTriggeredBy, showTooltip, hideTooltip]
     );
@@ -222,11 +227,12 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
                 return;
             }
 
-            tooltipRef.addEventListener('mouseenter', showTooltip);
-            tooltipRef.addEventListener('mouseleave', hideTooltip);
+            const controller = new AbortController();
+            tooltipRef.addEventListener('mouseenter', showTooltip, { signal: controller.signal });
+            tooltipRef.addEventListener('mouseleave', hideTooltip, { signal: controller.signal });
+
             return () => {
-                tooltipRef.removeEventListener('mouseenter', showTooltip);
-                tooltipRef.removeEventListener('mouseleave', hideTooltip);
+                controller.abort();
             };
         }, [tooltipRef, isTriggeredBy, showTooltip, hideTooltip, getLatest]
     );
@@ -253,8 +259,12 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
                 update?.();
             }
 
-            triggerRef.addEventListener('mousemove', setMousePosition);
-            return () => triggerRef.removeEventListener('mousemove', setMousePosition);
+            const controller = new AbortController();
+            triggerRef.addEventListener('mousemove', setMousePosition, { signal: controller.signal });
+
+            return () => {
+                controller.abort();
+            };
         }, [finalConfig.followCursor, triggerRef, update]
     );
 
@@ -266,7 +276,9 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
 
         const observer = new MutationObserver(update);
         observer.observe(tooltipRef, finalConfig.mutationObserverOptions);
-        return () => observer.disconnect();
+        return () => {
+            observer.disconnect();
+        };
     }, [finalConfig.mutationObserverOptions, tooltipRef, update]);
 
     // Tooltip props getter
