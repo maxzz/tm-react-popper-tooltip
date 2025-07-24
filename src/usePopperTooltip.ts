@@ -89,164 +89,180 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
             : [finalConfig.trigger],
     );
 
-    const hideTooltip = useCallback(() => {
-        clearTimeout(timer.current);
-        timer.current = window.setTimeout(
-            () => setVisible(false),
-            finalConfig.delayHide,
-        );
-    }, [finalConfig.delayHide, setVisible]);
+    const hideTooltip = useCallback(
+        () => {
+            clearTimeout(timer.current);
+            timer.current = window.setTimeout(() => setVisible(false), finalConfig.delayHide,);
+        }, [finalConfig.delayHide, setVisible]
+    );
 
-    const showTooltip = useCallback(() => {
-        clearTimeout(timer.current);
-        timer.current = window.setTimeout(
-            () => setVisible(true),
-            finalConfig.delayShow,
-        );
-    }, [finalConfig.delayShow, setVisible]);
+    const showTooltip = useCallback(
+        () => {
+            clearTimeout(timer.current);
+            timer.current = window.setTimeout(() => setVisible(true), finalConfig.delayShow,);
+        }, [finalConfig.delayShow, setVisible]
+    );
 
-    const toggleTooltip = useCallback(() => {
-        if (getLatest().visible) {
-            hideTooltip();
-        } else {
-            showTooltip();
-        }
-    }, [getLatest, hideTooltip, showTooltip]);
+    const toggleTooltip = useCallback(
+        () => {
+            if (getLatest().visible) {
+                hideTooltip();
+            } else {
+                showTooltip();
+            }
+        }, [getLatest, hideTooltip, showTooltip]
+    );
 
     // Handle click outside
-    useEffect(() => {
-        if (!getLatest().finalConfig.closeOnOutsideClick) return;
+    useEffect(
+        () => {
+            if (!getLatest().finalConfig.closeOnOutsideClick) return;
 
-        const handleClickOutside: EventListener = (event) => {
-            const { tooltipRef, triggerRef } = getLatest();
-            const target = event.composedPath?.()?.[0] || event.target;
-            if (target instanceof Node) {
-                if (
-                    tooltipRef != null &&
-                    triggerRef != null &&
-                    !tooltipRef.contains(target) &&
-                    !triggerRef.contains(target)
-                ) {
-                    hideTooltip();
+            const handleClickOutside: EventListener = (event) => {
+                const { tooltipRef, triggerRef } = getLatest();
+                const target = event.composedPath?.()?.[0] || event.target;
+                if (target instanceof Node) {
+                    if (
+                        tooltipRef != null &&
+                        triggerRef != null &&
+                        !tooltipRef.contains(target) &&
+                        !triggerRef.contains(target)
+                    ) {
+                        hideTooltip();
+                    }
                 }
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
+            };
+            document.addEventListener('mousedown', handleClickOutside);
 
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [getLatest, hideTooltip]);
+            return () => document.removeEventListener('mousedown', handleClickOutside);
+        }, [getLatest, hideTooltip]
+    );
 
     // Trigger: click
-    useEffect(() => {
-        if (triggerRef == null || !isTriggeredBy('click')) return;
+    useEffect(
+        () => {
+            if (triggerRef == null || !isTriggeredBy('click')) {
+                return;
+            }
 
-        triggerRef.addEventListener('click', toggleTooltip);
+            triggerRef.addEventListener('click', toggleTooltip);
 
-        return () => triggerRef.removeEventListener('click', toggleTooltip);
-    }, [triggerRef, isTriggeredBy, toggleTooltip]);
+            return () => triggerRef.removeEventListener('click', toggleTooltip);
+        }, [triggerRef, isTriggeredBy, toggleTooltip]
+    );
 
     // Trigger: double-click
-    useEffect(() => {
-        if (triggerRef == null || !isTriggeredBy('double-click')) return;
+    useEffect(
+        () => {
+            if (triggerRef == null || !isTriggeredBy('double-click')) {
+                return;
+            }
 
-        triggerRef.addEventListener('dblclick', toggleTooltip);
+            triggerRef.addEventListener('dblclick', toggleTooltip);
 
-        return () => triggerRef.removeEventListener('dblclick', toggleTooltip);
-    }, [triggerRef, isTriggeredBy, toggleTooltip]);
+            return () => triggerRef.removeEventListener('dblclick', toggleTooltip);
+        }, [triggerRef, isTriggeredBy, toggleTooltip]
+    );
 
     // Trigger: right-click
-    useEffect(() => {
-        if (triggerRef == null || !isTriggeredBy('right-click')) return;
+    useEffect(
+        () => {
+            if (triggerRef == null || !isTriggeredBy('right-click')) {
+                return;
+            }
 
-        const preventDefaultAndToggle: EventListener = (event) => {
-            // Don't show the context menu
-            event.preventDefault();
-            toggleTooltip();
-        };
+            const preventDefaultAndToggle: EventListener = (event) => {
+                // Don't show the context menu
+                event.preventDefault();
+                toggleTooltip();
+            };
 
-        triggerRef.addEventListener('contextmenu', preventDefaultAndToggle);
-        return () =>
-            triggerRef.removeEventListener('contextmenu', preventDefaultAndToggle);
-    }, [triggerRef, isTriggeredBy, toggleTooltip]);
+            triggerRef.addEventListener('contextmenu', preventDefaultAndToggle);
+            return () =>
+                triggerRef.removeEventListener('contextmenu', preventDefaultAndToggle);
+        }, [triggerRef, isTriggeredBy, toggleTooltip]
+    );
 
     // Trigger: focus
-    useEffect(() => {
-        if (triggerRef == null || !isTriggeredBy('focus')) return;
+    useEffect(
+        () => {
+            if (triggerRef == null || !isTriggeredBy('focus')) {
+                return;
+            }
 
-        triggerRef.addEventListener('focus', showTooltip);
-        triggerRef.addEventListener('blur', hideTooltip);
-        return () => {
-            triggerRef.removeEventListener('focus', showTooltip);
-            triggerRef.removeEventListener('blur', hideTooltip);
-        };
-    }, [triggerRef, isTriggeredBy, showTooltip, hideTooltip]);
+            triggerRef.addEventListener('focus', showTooltip);
+            triggerRef.addEventListener('blur', hideTooltip);
+            return () => {
+                triggerRef.removeEventListener('focus', showTooltip);
+                triggerRef.removeEventListener('blur', hideTooltip);
+            };
+        }, [triggerRef, isTriggeredBy, showTooltip, hideTooltip]
+    );
 
     // Trigger: hover on trigger
-    useEffect(() => {
-        if (triggerRef == null || !isTriggeredBy('hover')) return;
+    useEffect(
+        () => {
+            if (triggerRef == null || !isTriggeredBy('hover')) {
+                return;
+            }
 
-        triggerRef.addEventListener('mouseenter', showTooltip);
-        triggerRef.addEventListener('mouseleave', hideTooltip);
-        return () => {
-            triggerRef.removeEventListener('mouseenter', showTooltip);
-            triggerRef.removeEventListener('mouseleave', hideTooltip);
-        };
-    }, [triggerRef, isTriggeredBy, showTooltip, hideTooltip]);
+            triggerRef.addEventListener('mouseenter', showTooltip);
+            triggerRef.addEventListener('mouseleave', hideTooltip);
+            return () => {
+                triggerRef.removeEventListener('mouseenter', showTooltip);
+                triggerRef.removeEventListener('mouseleave', hideTooltip);
+            };
+        }, [triggerRef, isTriggeredBy, showTooltip, hideTooltip]
+    );
 
     // Trigger: hover on tooltip, keep it open if hovered
-    useEffect(() => {
-        if (
-            tooltipRef == null ||
-            !isTriggeredBy('hover') ||
-            !getLatest().finalConfig.interactive
-        )
-            return;
+    useEffect(
+        () => {
+            if (tooltipRef == null || !isTriggeredBy('hover') || !getLatest().finalConfig.interactive) {
+                return;
+            }
 
-        tooltipRef.addEventListener('mouseenter', showTooltip);
-        tooltipRef.addEventListener('mouseleave', hideTooltip);
-        return () => {
-            tooltipRef.removeEventListener('mouseenter', showTooltip);
-            tooltipRef.removeEventListener('mouseleave', hideTooltip);
-        };
-    }, [tooltipRef, isTriggeredBy, showTooltip, hideTooltip, getLatest]);
+            tooltipRef.addEventListener('mouseenter', showTooltip);
+            tooltipRef.addEventListener('mouseleave', hideTooltip);
+            return () => {
+                tooltipRef.removeEventListener('mouseenter', showTooltip);
+                tooltipRef.removeEventListener('mouseleave', hideTooltip);
+            };
+        }, [tooltipRef, isTriggeredBy, showTooltip, hideTooltip, getLatest]
+    );
 
     // Handle closing tooltip if trigger hidden
-    const isReferenceHidden =
-        popperProps?.state?.modifiersData?.hide?.isReferenceHidden;
-    useEffect(() => {
-        if (finalConfig.closeOnTriggerHidden && isReferenceHidden) hideTooltip();
-    }, [finalConfig.closeOnTriggerHidden, hideTooltip, isReferenceHidden]);
+    const isReferenceHidden = popperProps?.state?.modifiersData?.hide?.isReferenceHidden;
+    useEffect(
+        () => {
+            if (finalConfig.closeOnTriggerHidden && isReferenceHidden) {
+                hideTooltip();
+            }
+        }, [finalConfig.closeOnTriggerHidden, hideTooltip, isReferenceHidden]
+    );
 
     // Handle follow cursor
-    useEffect(() => {
-        if (!finalConfig.followCursor || triggerRef == null) return;
+    useEffect(
+        () => {
+            if (!finalConfig.followCursor || triggerRef == null) {
+                return;
+            }
 
-        function setMousePosition({
-            clientX,
-            clientY,
-        }: {
-            clientX: number;
-            clientY: number;
-        }) {
-            virtualElement.getBoundingClientRect = generateBoundingClientRect(
-                clientX,
-                clientY,
-            );
-            update?.();
-        }
+            function setMousePosition({ clientX, clientY, }: { clientX: number; clientY: number; }) {
+                virtualElement.getBoundingClientRect = generateBoundingClientRect(clientX, clientY);
+                update?.();
+            }
 
-        triggerRef.addEventListener('mousemove', setMousePosition);
-        return () => triggerRef.removeEventListener('mousemove', setMousePosition);
-    }, [finalConfig.followCursor, triggerRef, update]);
+            triggerRef.addEventListener('mousemove', setMousePosition);
+            return () => triggerRef.removeEventListener('mousemove', setMousePosition);
+        }, [finalConfig.followCursor, triggerRef, update]
+    );
 
     // Handle tooltip DOM mutation changes (aka mutation observer)
     useEffect(() => {
-        if (
-            tooltipRef == null ||
-            update == null ||
-            finalConfig.mutationObserverOptions == null
-        )
+        if (tooltipRef == null || update == null || finalConfig.mutationObserverOptions == null) {
             return;
+        }
 
         const observer = new MutationObserver(update);
         observer.observe(tooltipRef, finalConfig.mutationObserverOptions);
@@ -257,10 +273,7 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
     const getTooltipProps = (args: PropsGetterArgs = {}) => {
         return {
             ...args,
-            style: {
-                ...args.style,
-                ...styles['popper'],
-            } as CSSProperties,
+            style: { ...args.style, ...styles['popper'], } as CSSProperties,
             ...attributes['popper'],
             'data-popper-interactive': finalConfig.interactive,
         };
@@ -271,10 +284,7 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
         return {
             ...args,
             ...attributes['arrow'],
-            style: {
-                ...args.style,
-                ...styles['arrow'],
-            } as CSSProperties,
+            style: { ...args.style, ...styles['arrow'], } as CSSProperties,
             'data-popper-arrow': true,
         };
     };
