@@ -4,22 +4,6 @@
     "description": "React tooltip library built around react-popper. Upgrade of react-popper-tooltip by Mohsin Ul Haq <mohsinulhaq01@gmail.com>",
     "author": "Max Zakharzhevskiy <maxzz@msn.com>",
     "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/maxzz/tm-react-popper-tooltip"
-    },
-    "keywords": [
-        "react",
-        "tooltip",
-        "popover",
-        "overlay",
-        "react-tooltip",
-        "react-popper"
-    ],
-    "workspaces": [
-        "packages/*",
-        "packages/popper-tooltip/*"
-    ],
     "scripts": {
         "1tsc": "tsc -w",
         "2dev": "tsup src/main.ts --format esm --dts --sourcemap --watch",
