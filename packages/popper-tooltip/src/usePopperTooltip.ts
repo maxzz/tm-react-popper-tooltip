@@ -1,8 +1,14 @@
 import { type CSSProperties, useMemo, useState, useRef, useEffect, useCallback } from "react";
 import type { VirtualElement } from "@popperjs/core";
 import { usePopper } from "react-popper";
+import { useFloating } from "@floating-ui/react";
 import { useControlledState, useGetLatest, generateBoundingClientRect, } from "./utils.js";
 import type { Config, PopperOptions, PropsGetterArgs, TriggerType, } from "./types.js";
+
+// export type VirtualElement = {
+//     getBoundingClientRect: () => ClientRect | DOMRect;
+//     contextElement?: Element;
+// };
 
 const virtualElement: VirtualElement = {
     getBoundingClientRect: generateBoundingClientRect(),
@@ -40,7 +46,10 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
     );
 
     const defaultModifiers = useMemo(
-        () => [{ name: 'offset', options: { offset: finalConfig.offset } }],
+        () => [{
+            name: 'offset',
+            options: { offset: finalConfig.offset }
+        }],
         Array.isArray(finalConfig.offset) ? finalConfig.offset : [],
     );
 
@@ -64,11 +73,8 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
         []
     );
 
-    const { styles, attributes, ...popperProps } = usePopper(
-        finalConfig.followCursor ? virtualElement : triggerRef,
-        tooltipRef,
-        finalPopperOptions,
-    );
+    const { styles, attributes, ...popperProps } = usePopper(finalConfig.followCursor ? virtualElement : triggerRef, tooltipRef, finalPopperOptions);
+    // const { styles, attributes, ...popperProps } = useFloating(finalConfig.followCursor ? virtualElement : triggerRef, tooltipRef, finalPopperOptions);
 
     const update = popperProps.update;
 
@@ -87,14 +93,16 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
         () => {
             clearTimeout(timer.current);
             timer.current = window.setTimeout(() => setVisible(false), finalConfig.delayHide,);
-        }, [finalConfig.delayHide, setVisible]
+        },
+        [finalConfig.delayHide, setVisible]
     );
 
     const showTooltip = useCallback(
         () => {
             clearTimeout(timer.current);
             timer.current = window.setTimeout(() => setVisible(true), finalConfig.delayShow,);
-        }, [finalConfig.delayShow, setVisible]
+        },
+        [finalConfig.delayShow, setVisible]
     );
 
     const toggleTooltip = useCallback(
@@ -104,7 +112,8 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
             } else {
                 showTooltip();
             }
-        }, [getLatest, hideTooltip, showTooltip]
+        },
+        [getLatest, hideTooltip, showTooltip]
     );
 
     // Handle click outside
@@ -129,7 +138,8 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
             document.addEventListener('mousedown', handleClickOutside);
 
             return () => document.removeEventListener('mousedown', handleClickOutside);
-        }, [getLatest, hideTooltip]
+        },
+        [getLatest, hideTooltip]
     );
 
     // Trigger: click
@@ -145,7 +155,8 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
             return () => {
                 controller.abort();
             };
-        }, [triggerRef, isTriggeredBy, toggleTooltip]
+        },
+        [triggerRef, isTriggeredBy, toggleTooltip]
     );
 
     // Trigger: double-click
@@ -161,7 +172,8 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
             return () => {
                 controller.abort();
             };
-        }, [triggerRef, isTriggeredBy, toggleTooltip]
+        },
+        [triggerRef, isTriggeredBy, toggleTooltip]
     );
 
     // Trigger: right-click
@@ -183,7 +195,8 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
             return () => {
                 controller.abort();
             };
-        }, [triggerRef, isTriggeredBy, toggleTooltip]
+        },
+        [triggerRef, isTriggeredBy, toggleTooltip]
     );
 
     // Trigger: focus
@@ -200,7 +213,8 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
             return () => {
                 controller.abort();
             };
-        }, [triggerRef, isTriggeredBy, showTooltip, hideTooltip]
+        },
+        [triggerRef, isTriggeredBy, showTooltip, hideTooltip]
     );
 
     // Trigger: hover on trigger
@@ -217,7 +231,8 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
             return () => {
                 controller.abort();
             };
-        }, [triggerRef, isTriggeredBy, showTooltip, hideTooltip]
+        },
+        [triggerRef, isTriggeredBy, showTooltip, hideTooltip]
     );
 
     // Trigger: hover on tooltip, keep it open if hovered
@@ -234,7 +249,8 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
             return () => {
                 controller.abort();
             };
-        }, [tooltipRef, isTriggeredBy, showTooltip, hideTooltip, getLatest]
+        },
+        [tooltipRef, isTriggeredBy, showTooltip, hideTooltip, getLatest]
     );
 
     // Handle closing tooltip if trigger hidden
@@ -244,7 +260,8 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
             if (finalConfig.closeOnTriggerHidden && isReferenceHidden) {
                 hideTooltip();
             }
-        }, [finalConfig.closeOnTriggerHidden, hideTooltip, isReferenceHidden]
+        },
+        [finalConfig.closeOnTriggerHidden, hideTooltip, isReferenceHidden]
     );
 
     // Handle follow cursor
@@ -265,7 +282,8 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
             return () => {
                 controller.abort();
             };
-        }, [finalConfig.followCursor, triggerRef, update]
+        },
+        [finalConfig.followCursor, triggerRef, update]
     );
 
     // Handle tooltip DOM mutation changes (aka mutation observer)
@@ -280,28 +298,29 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
             return () => {
                 observer.disconnect();
             };
-        }, [finalConfig.mutationObserverOptions, tooltipRef, update]
+        },
+        [finalConfig.mutationObserverOptions, tooltipRef, update]
     );
 
     // Tooltip props getter
-    const getTooltipProps = (args: PropsGetterArgs = {}) => {
+    function getTooltipProps(args: PropsGetterArgs = {}) {
         return {
             ...args,
             style: { ...args.style, ...styles['popper'], } as CSSProperties,
             ...attributes['popper'],
             'data-popper-interactive': finalConfig.interactive,
         };
-    };
+    }
 
     // Arrow props getter
-    const getArrowProps = (args: PropsGetterArgs = {}) => {
+    function getArrowProps(args: PropsGetterArgs = {}) {
         return {
             ...args,
             ...attributes['arrow'],
             style: { ...args.style, ...styles['arrow'], } as CSSProperties,
             'data-popper-arrow': true,
         };
-    };
+    }
 
     return {
         getArrowProps,

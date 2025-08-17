@@ -1,9 +1,9 @@
-import * as React from 'react';
-import { usePopperTooltip } from 'react-popper-tooltip';
-import 'react-popper-tooltip/dist/styles.css';
+import { useEffect, useState } from "react";
+import { usePopperTooltip } from "@tm/popper-tooltip";
+import "react-popper-tooltip/dist/styles.css";
 
 export function D3_CloseOnEsc() {
-    const [controlledVisible, setControlledVisible] = React.useState(false);
+    const [controlledVisible, setControlledVisible] = useState(false);
 
     const {
         getArrowProps,
@@ -12,22 +12,22 @@ export function D3_CloseOnEsc() {
         setTriggerRef,
         visible,
     } = usePopperTooltip({
-        trigger: 'click',
+        trigger: "click",
         visible: controlledVisible,
         onVisibleChange: setControlledVisible,
     });
 
-    React.useEffect(() => {
-        const handleKeyDown = ({ key }) => {
-            if (key === 'Escape') {
+    useEffect(() => {
+        const handleKeyDown = ({ key }: KeyboardEvent) => {
+            if (key === "Escape") {
                 setControlledVisible(false);
             }
         };
 
-        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener("keydown", handleKeyDown);
 
         return () => {
-            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener("keydown", handleKeyDown);
         };
     }, []);
 
@@ -45,10 +45,10 @@ export function D3_CloseOnEsc() {
             {visible && (
                 <div
                     ref={setTooltipRef}
-                    {...getTooltipProps({ className: 'tooltip-container' })}
+                    {...getTooltipProps({ className: "tooltip-container" })}
                 >
                     Tooltip element
-                    <div {...getArrowProps({ className: 'tooltip-arrow' })} />
+                    <div {...getArrowProps({ className: "tooltip-arrow" })} />
                 </div>
             )}
         </div>

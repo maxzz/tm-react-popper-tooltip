@@ -1,4 +1,4 @@
-import { usePopperTooltip } from 'react-popper-tooltip';
+import { usePopperTooltip } from "@tm/popper-tooltip";
 
 export function D2_Basic() {
     const {

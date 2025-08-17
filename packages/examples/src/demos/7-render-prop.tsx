@@ -1,6 +1,6 @@
-import { createPortal } from 'react-dom';
-import { usePopperTooltip } from 'react-popper-tooltip';
-import 'react-popper-tooltip/dist/styles.css';
+import { createPortal } from "react-dom";
+import { usePopperTooltip } from "@tm/popper-tooltip";
+import "react-popper-tooltip/dist/styles.css";
 
 export function D7_RenderProp() {
     return (

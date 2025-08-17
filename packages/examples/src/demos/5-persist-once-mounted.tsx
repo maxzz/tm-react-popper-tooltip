@@ -1,5 +1,5 @@
-import { usePopperTooltip } from 'react-popper-tooltip';
-import 'react-popper-tooltip/dist/styles.css';
+import { usePopperTooltip } from "@tm/popper-tooltip";
+import "react-popper-tooltip/dist/styles.css";
 
 export function D5_PersistOnceMounted() {
     const [mounted, setMounted] = React.useState(false);

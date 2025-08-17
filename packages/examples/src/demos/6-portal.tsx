@@ -1,6 +1,6 @@
-import ReactDOM from 'react-dom';
-import { usePopperTooltip } from 'react-popper-tooltip';
-import 'react-popper-tooltip/src/styles.css';
+import ReactDOM from "react-dom";
+import { usePopperTooltip } from "@tm/popper-tooltip";
+import "react-popper-tooltip/src/styles.css";
 
 export function D6_Portal() {
     const {
