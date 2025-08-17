@@ -1,4 +1,4 @@
-import { useRef, useCallback, useState } from 'react';
+import { useRef, useCallback, useState } from "react";
 
 // kudos to @tannerlinsley https://twitter.com/tannerlinsley
 /**

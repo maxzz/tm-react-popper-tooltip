@@ -1,8 +1,8 @@
-import { type CSSProperties, useMemo, useState, useRef, useEffect, useCallback } from 'react';
-import type { VirtualElement } from '@popperjs/core';
-import { usePopper } from 'react-popper';
-import { useControlledState, useGetLatest, generateBoundingClientRect, } from './utils.js';
-import type { Config, PopperOptions, PropsGetterArgs, TriggerType, } from './types.js';
+import { type CSSProperties, useMemo, useState, useRef, useEffect, useCallback } from "react";
+import type { VirtualElement } from "@popperjs/core";
+import { usePopper } from "react-popper";
+import { useControlledState, useGetLatest, generateBoundingClientRect, } from "./utils.js";
+import type { Config, PopperOptions, PropsGetterArgs, TriggerType, } from "./types.js";
 
 const virtualElement: VirtualElement = {
     getBoundingClientRect: generateBoundingClientRect(),
@@ -269,17 +269,19 @@ export function usePopperTooltip(config: Config = {}, popperOptions: PopperOptio
     );
 
     // Handle tooltip DOM mutation changes (aka mutation observer)
-    useEffect(() => {
-        if (tooltipRef == null || update == null || finalConfig.mutationObserverOptions == null) {
-            return;
-        }
+    useEffect(
+        () => {
+            if (tooltipRef == null || update == null || finalConfig.mutationObserverOptions == null) {
+                return;
+            }
 
-        const observer = new MutationObserver(update);
-        observer.observe(tooltipRef, finalConfig.mutationObserverOptions);
-        return () => {
-            observer.disconnect();
-        };
-    }, [finalConfig.mutationObserverOptions, tooltipRef, update]);
+            const observer = new MutationObserver(update);
+            observer.observe(tooltipRef, finalConfig.mutationObserverOptions);
+            return () => {
+                observer.disconnect();
+            };
+        }, [finalConfig.mutationObserverOptions, tooltipRef, update]
+    );
 
     // Tooltip props getter
     const getTooltipProps = (args: PropsGetterArgs = {}) => {

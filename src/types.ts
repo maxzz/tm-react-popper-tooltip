@@ -1,5 +1,5 @@
-import { CSSProperties } from 'react';
-import { Placement, Options, createPopper } from '@popperjs/core';
+import { CSSProperties } from "react";
+import { Placement, Options, createPopper } from "@popperjs/core";
 
 export type TriggerType =
     | 'click'
