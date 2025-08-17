@@ -1,13 +1,13 @@
 {
   "dependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "react-popper-tooltip": "^4.0.0",
-    "react-spring": "^8.0.27",
-    "react-scripts": "3.4.3"
+    "react-scripts": "5.0.1",
+    "react-spring": "^10.0.1"
   },
   "devDependencies": {
-    "@rescripts/cli": "^0.0.15"
+    "@rescripts/cli": "^0.0.16"
   },
   "scripts": {
     "start": "rescripts start",
