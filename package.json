@@ -16,45 +16,13 @@
         "react-tooltip",
         "react-popper"
     ],
-    "type": "module",
-    "engines": {
-        "node": ">=16"
-    },
-    "exports": "./dist/main.js",
-    "typings": "dist/main.d.ts",
-    "style": "dist/styles.css",
-    "files": [
-        "dist"
+    "workspaces": [
+        "packages/*",
+        "packages/popper-tooltip/*"
     ],
-    "sideEffects": [
-        "dist/styles.css"
-    ],
-    "pnpm": {
-        "onlyBuiltDependencies": [
-            "esbuild"
-        ]
-    },
-    "peerDependencies": {
-        "react": ">=16.14.0",
-        "react-dom": ">=16.14.0"
-    },
-    "dependencies": {
-        "@popperjs/core": "^2.11.8",
-        "react-popper": "^2.3.0"
-    },
-    "devDependencies": {
-        "@types/react": "^19.0.0",
-        "@types/react-dom": "^19.0.0",
-        "react": "^19.0.0",
-        "react-dom": "^19.0.0",
-        "tsup": "^8.0.0",
-        "typescript": "^5.2.2",
-        "vite": "^7.0.5",
-        "vitest": "^3.2.4"
-    },
     "scripts": {
-        "tsc": "tsc -w",
-        "dev": "tsup src/main.ts --format esm --dts --sourcemap --watch",
-        "build": "rm -rf dist && tsup src/main.ts --format esm --dts --sourcemap"
+        "1tsc": "tsc -w",
+        "2dev": "tsup src/main.ts --format esm --dts --sourcemap --watch",
+        "3build": "rm -rf dist && tsup src/main.ts --format esm --dts --sourcemap"
     }
 }
