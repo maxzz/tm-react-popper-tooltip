@@ -29,11 +29,6 @@
     "sideEffects": [
         "dist/styles.css"
     ],
-    "pnpm": {
-        "onlyBuiltDependencies": [
-            "esbuild"
-        ]
-    },
     "peerDependencies": {
         "react": ">=16.14.0",
         "react-dom": ">=16.14.0"
