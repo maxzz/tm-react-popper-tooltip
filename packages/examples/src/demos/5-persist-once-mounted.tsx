@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { usePopperTooltip } from "@tm/popper-tooltip";
+import { localClasses } from "./x-styles";
 // import "react-popper-tooltip/dist/styles.css";
 
 export function D5_PersistOnceMounted() {
@@ -24,19 +25,19 @@ export function D5_PersistOnceMounted() {
     }
 
     return (
-        <div className="App">
-            <h1>react-popper-tooltip</h1>
-            <p>
+        <div className={localClasses.demoSection}>
+            <h1 className={localClasses.sectionHeader}>5. react-popper-tooltip</h1>
+            <p className={localClasses.explanation}>
                 In this example, the tooltip stays in the DOM once mounted. It can be
                 helpful for heavy components to avoid unnecessary mounting/dismounting
                 whenever tooltip is hidden or shown or when you want to preserve the
                 tooltip content's state.
             </p>
-            <p>
+            <p className={localClasses.explanation}>
                 Mounted: {mounted ? 'yes' : 'no'}, visible: {visible ? 'yes' : 'no'}
             </p>
 
-            <button type="button" ref={setTriggerRef}>
+            <button className={localClasses.trigger} type="button" ref={setTriggerRef}>
                 Trigger element
             </button>
 

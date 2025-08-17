@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { usePopperTooltip } from "@tm/popper-tooltip";
-// import "react-popper-tooltip/dist/styles.css";
+import { localClasses } from "./x-styles";
+//import "@tm/popper-tooltip/style/styles.css";
+import "./styles.css";
 
 export function D3_CloseOnEsc() {
     const [controlledVisible, setControlledVisible] = useState(false);
@@ -17,28 +19,30 @@ export function D3_CloseOnEsc() {
         onVisibleChange: setControlledVisible,
     });
 
-    useEffect(() => {
-        const handleKeyDown = ({ key }: KeyboardEvent) => {
-            if (key === "Escape") {
-                setControlledVisible(false);
-            }
-        };
+    useEffect(
+        () => {
+            const handleKeyDown = ({ key }: KeyboardEvent) => {
+                if (key === "Escape") {
+                    setControlledVisible(false);
+                }
+            };
 
-        document.addEventListener("keydown", handleKeyDown);
+            document.addEventListener("keydown", handleKeyDown);
 
-        return () => {
-            document.removeEventListener("keydown", handleKeyDown);
-        };
-    }, []);
+            return () => {
+                document.removeEventListener("keydown", handleKeyDown);
+            };
+        }, []
+    );
 
     return (
-        <div className="App">
-            <h1>react-popper-tooltip</h1>
-            <p>
+        <div className={localClasses.demoSection}>
+            <h1 className={localClasses.sectionHeader}>3. react-popper-tooltip</h1>
+            <p className={localClasses.explanation}>
                 This is an example of how to close the tooltip pressing the Esc button.
             </p>
 
-            <button type="button" ref={setTriggerRef}>
+            <button className={localClasses.trigger} type="button" ref={setTriggerRef}>
                 Trigger element
             </button>
 

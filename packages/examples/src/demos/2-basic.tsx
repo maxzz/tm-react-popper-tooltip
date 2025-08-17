@@ -1,4 +1,5 @@
 import { usePopperTooltip } from "@tm/popper-tooltip";
+import { localClasses } from "./x-styles";
 
 export function D2_Basic() {
     const {
@@ -10,14 +11,10 @@ export function D2_Basic() {
     } = usePopperTooltip();
 
     return (
-        <div className="max-w-3xl mx-auto p-8 text-center">
-            <h1 className="bg-red-500 text-3xl font-semibold mb-6">Basic example</h1>
+        <div className={localClasses.demoSection}>
+            <h1 className={localClasses.sectionHeader}>2. Basic example</h1>
 
-            <button
-                type="button"
-                ref={setTriggerRef}
-                className="rounded-md border border-transparent px-4 py-2 text-sm font-medium bg-gray-800 text-white hover:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            >
+            <button className={localClasses.trigger} type="button" ref={setTriggerRef}>
                 Trigger element
             </button>
 
