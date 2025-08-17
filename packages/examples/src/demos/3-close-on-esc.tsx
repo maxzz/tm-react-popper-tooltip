@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { usePopperTooltip } from "@tm/popper-tooltip";
-import "react-popper-tooltip/dist/styles.css";
+// import "react-popper-tooltip/dist/styles.css";
 
 export function D3_CloseOnEsc() {
     const [controlledVisible, setControlledVisible] = useState(false);

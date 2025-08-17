@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { usePopperTooltip } from "@tm/popper-tooltip";
-import "react-popper-tooltip/dist/styles.css";
+// import "react-popper-tooltip/dist/styles.css";
 
 export function D4_Controlled() {
-    const [controlledVisible, setControlledVisible] = React.useState(false);
+    const [controlledVisible, setControlledVisible] = useState(false);
 
     const {
         getArrowProps,

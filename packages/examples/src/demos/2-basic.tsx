@@ -11,7 +11,7 @@ export function D2_Basic() {
 
     return (
         <div className="max-w-3xl mx-auto p-8 text-center">
-            <h1 className="text-3xl font-semibold mb-6">Basic example</h1>
+            <h1 className="bg-red-500 text-3xl font-semibold mb-6">Basic example</h1>
 
             <button
                 type="button"

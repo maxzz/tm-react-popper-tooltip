@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { usePopperTooltip } from "@tm/popper-tooltip";
-import "react-popper-tooltip/dist/styles.css";
+// import "react-popper-tooltip/dist/styles.css";
 
 export function D5_PersistOnceMounted() {
-    const [mounted, setMounted] = React.useState(false);
+    const [mounted, setMounted] = useState(false);
 
     const {
         getArrowProps,
@@ -16,7 +17,7 @@ export function D5_PersistOnceMounted() {
         onVisibleChange: setMountedOnceVisible,
     });
 
-    function setMountedOnceVisible(visible) {
+    function setMountedOnceVisible(visible: boolean) {
         if (!mounted && visible) {
             setMounted(true);
         }
@@ -60,7 +61,7 @@ export function D5_PersistOnceMounted() {
 }
 
 function HeavyCalculations() {
-    const [counter, setCounter] = React.useState(0);
+    const [counter, setCounter] = useState(0);
     return (
         <div>
             <p>

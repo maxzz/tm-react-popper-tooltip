@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { usePopperTooltip } from "@tm/popper-tooltip";
 import "react-popper-tooltip/dist/styles.css";
@@ -88,7 +89,7 @@ function TooltipTrigger({
         placement: state ? state.placement : undefined,
     });
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (typeof getTriggerRef === 'function') getTriggerRef(triggerRef);
     }, [triggerRef, getTriggerRef]);
 
